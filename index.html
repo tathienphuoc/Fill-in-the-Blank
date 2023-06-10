@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+	<label for="story">Tell us your story:</label>
+	<textarea id="story" name="story" rows="5"> </textarea>
+	<div class="btn">
+		<button onclick="generate()" id="generate">Generate</button>
+		<button onclick="showAllAnswer(this)" id="showAll">Show All</button>
+	</div>
+
+	<div id="result">
+		<div style="display: none; justify-content: center;" id="loadingImage">
+			<div class="loader"></div>
+		</div>
+	</div>
+	<script src="./script.js"></script>
+</body>
+
+</html>
