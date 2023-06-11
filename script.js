@@ -6,7 +6,6 @@ function toggleVisible(element) {
 }
 
 function showAllAnswer(el) {
-	el.innerHTML = el.innerHTML == 'Show All' ? 'Hide All' : 'Show All';
 	let color;
 	if (el.innerHTML == 'Show All') {
 		el.innerHTML = 'Hide All';
@@ -21,13 +20,12 @@ function showAllAnswer(el) {
 	}
 }
 
-function toggleLoadingImage() {
-	let loadingImage = document.getElementById('loadingImage');
-	loadingImage.style.display = loadingImage.style.display == 'flex' ? 'none' : 'flex';
+function enableLoadingImage() {
+	document.getElementById('result').innerHTML = '<div style="display: flex; justify-content: center;"><div class="loader"></div></div>';
 }
 
 async function generate() {
-	toggleLoadingImage();
+	enableLoadingImage();
 	let words = document.getElementById('story').value.replace(/  +/g, ' ').split(' ');
 	let count = 1;
 	for (let i = 0; i < words.length; i = i + Math.floor(Math.random() * range[1]) + range[1]) {
@@ -45,5 +43,4 @@ async function generate() {
 		}
 	}
 	document.getElementById('result').innerHTML = words.join(' ');
-	toggleLoadingImage();
 }
