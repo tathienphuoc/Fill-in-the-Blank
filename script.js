@@ -22,9 +22,9 @@ async function generate() {
 			const jsonData = await response.json();
 			if (jsonData && !jsonData.message) {
 				var partOfSpeech = jsonData[0].meanings.map(el => el.partOfSpeech);
-				if (partOfSpeech.includes('noun')) {
+				if (partOfSpeech.includes('noun') && !partOfSpeech.includes('preposition') && !partOfSpeech.includes('pronoun')) {
 					answer.push(words[i]);
-					words[i] = "<span style='background-color:yellow;padding: 0 60px 0 0;'>(" + count +")</span>";
+					words[i] = "<span style='background-color:yellow;padding: 0 60px 0 0;'>(" + count + ")</span>";
 					count++;
 				}
 			}
@@ -34,9 +34,9 @@ async function generate() {
 	}
 	blankSection.innerHTML = words.join(' ');
 	toggleLoadingImage();
-	let html='';
-	for (let i = 0; i < answer.length; i++) { 
-		html += '<tr><th scope="row">' + (i + 1) + '</th><td>' + answer[i]+'</td></tr>';
+	let html = '';
+	for (let i = 0; i < answer.length; i++) {
+		html += '<tr><th scope="row">' + (i + 1) + '</th><td>' + answer[i] + '</td></tr>';
 	}
-	answerTable.innerHTML=html;
+	answerTable.innerHTML = html;
 }
