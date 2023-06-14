@@ -1,32 +1,20 @@
 let range = [2, 5];
+let generateBtn = document.getElementById('generate');
+let showAnswerBtn = document.getElementById('showAnswer');
+let loadingImage = document.getElementById('loadingImage');
+let answerTable = document.getElementById('answer');
+let blankSection = document.getElementById('blankSection');
 
-
-function toggleVisible(element) {
-	element.style.color = element.style.color == 'yellow' ? 'red' : 'yellow';
-}
-
-function showAllAnswer(el) {
-	let color;
-	if (el.innerHTML == 'Show All') {
-		el.innerHTML = 'Hide All';
-		color = 'red';
-	} else {
-		el.innerHTML = 'Show All';
-		color = 'yellow';
-	}
-	let spans = document.getElementsByName('answer');
-	for (let i = 0; i < spans.length; i++) {
-		spans[i].style.color = color;
-	}
-}
-
-function enableLoadingImage() {
-	document.getElementById('result').innerHTML = '<div style="display: flex; justify-content: center;"><div class="loader"></div></div>';
+function toggleLoadingImage() {
+	loadingImage.style.display = loadingImage.style.display == 'none' ? 'flex' : 'none';
+	generateBtn.disabled = !generateBtn.disabled;
 }
 
 async function generate() {
-	enableLoadingImage();
+	toggleLoadingImage();
+	blankSection.innerHTML = '';
 	let words = document.getElementById('story').value.replace(/  +/g, ' ').split(' ');
+	let answer = [];
 	let count = 1;
 	for (let i = 0; i < words.length; i = i + Math.floor(Math.random() * range[1]) + range[1]) {
 		try {
@@ -35,12 +23,20 @@ async function generate() {
 			if (jsonData && !jsonData.message) {
 				var partOfSpeech = jsonData[0].meanings.map(el => el.partOfSpeech);
 				if (partOfSpeech.includes('noun')) {
+					answer.push(words[i]);
+					words[i] = "<span style='background-color:yellow;padding: 0 60px 0 0;'>(" + count +")</span>";
 					count++;
-					words[i] = "<span style='background-color:yellow'>(" + count + ")<span name='answer' style='color: yellow; padding: 0 5px ; cursor : pointer; font-weight:bold' onclick='toggleVisible(this)'>" + words[i] + "</span></span>";
 				}
 			}
 		} catch (e) {
+			console.log(e.message);
 		}
 	}
-	document.getElementById('result').innerHTML = words.join(' ');
+	blankSection.innerHTML = words.join(' ');
+	toggleLoadingImage();
+	let html='';
+	for (let i = 0; i < answer.length; i++) { 
+		html += '<tr><th scope="row">' + (i + 1) + '</th><td>' + answer[i]+'</td></tr>';
+	}
+	answerTable.innerHTML=html;
 }
